@@ -1,0 +1,26 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="rtl"
+    android:layout_gravity="right"
+    tools:context="com.example.alireza.myapplication.FrgDetails">
+
+    <!-- TODO: Update blank fragment layout -->
+    <EditText
+        android:layout_width="match_parent"
+        android:id="@+id/txtViewDetails"
+        android:layoutDirection="rtl"
+        android:layout_gravity="end"
+        android:textSize="20sp"
+        android:lineSpacingMultiplier="2"
+        android:lineSpacingExtra="0dp"
+        android:scrollbars="vertical"
+        android:padding="10dp"
+        android:layout_height="match_parent"
+        android:inputType="none"
+        android:minLines="10"
+
+        />
+
+</FrameLayout>

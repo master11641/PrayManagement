@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="names">
+        <item>Mahdi</item>
+        <item>Mostafa</item>
+        <item>Zahra</item>
+        <item>Fateme</item>
+        <item>Arman</item>
+    </array>
+
+</resources>
