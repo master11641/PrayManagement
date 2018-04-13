@@ -18,7 +18,7 @@
             android:value="1" />
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.example.alireza.myapplication.model.Product" />
+            android:value="com.example.alireza.myapplication.model.Product,com.example.alireza.myapplication.model.Category" />
 
         <activity
             android:name=".SplashActivity"
@@ -45,5 +45,15 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+
+
 </manifest>
 

@@ -46,4 +46,7 @@ public class Product extends Model {
     public void setBookmark(boolean bookmark) {
         isBookmark = bookmark;
     }
+
+    @Column(name = "Category")
+    public Category category;
 }

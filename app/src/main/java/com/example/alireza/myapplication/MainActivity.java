@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -39,7 +40,7 @@ import libs.mjn.prettydialog.PrettyDialogCallback;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity implements FrgOne.OnFragmentInteractionListener, frgAddPray.OnFragmentInteractionListener
-,FrgDetails.OnFragmentInteractionListener{
+        , FrgDetails.OnFragmentInteractionListener, FrgCategoryList.OnFragmentInteractionListener, FrgCategoryInsert.OnFragmentInteractionListener {
 
     ListView mListView;
     String[] mobileBrands;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements FrgOne.OnFragment
     ImageButton imgButtonShowMenu;
     ImageButton imgButtonHome;
     ImageButton imageGetFromServer;
+    Button btnListGroup;
+    Button btnCategotyAdd;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -65,12 +68,33 @@ public class MainActivity extends AppCompatActivity implements FrgOne.OnFragment
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_main);
+        btnCategotyAdd=findViewById(R.id.btnCategoryAdd);
+        btnCategotyAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FrgCategoryInsert frg = new FrgCategoryInsert();
+                android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+                android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.frg_holder, frg);
+                ft.commit();
+            }
+        });
         imgButtonShowMenu = findViewById(R.id.showMenues);
         drawer = (CardDrawerLayout) findViewById(R.id.drawer_layout);
         drawer.useCustomBehavior(Gravity.START); //assign custom behavior for "Right" drawer
         navigationView = (NavigationView) findViewById(R.id.nav_view_notification);
         navigationView.setBackgroundColor(getResources().getColor(R.color.White));
-
+        btnListGroup = findViewById(R.id.btnCategoryList);
+        btnListGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FrgCategoryList frg = new FrgCategoryList();
+                android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+                android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.frg_holder, frg);
+                ft.commit();
+            }
+        });
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -119,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements FrgOne.OnFragment
                                     result = http.run("http://192.168.43.33:8080/api/prays");
                                     ListTypeSerializer ts = new ListTypeSerializer();
                                     List<Product> products = (List<Product>) ts.deserialize(result);
-                                  //  btnInsert.setText(result);//برای لاگ برگشت اطلاعات از سرور
+                                    //  btnInsert.setText(result);//برای لاگ برگشت اطلاعات از سرور
                                     // Gson gson = new Gson();
                                     //  List<Product>  products = gson.fromJson(result, new TypeToken<List<Product>>(){}.getType());
                                     //Toast.makeText(MainActivity.this, products.get(0).getProductName(), Toast.LENGTH_SHORT).show();
@@ -230,7 +254,14 @@ public class MainActivity extends AppCompatActivity implements FrgOne.OnFragment
     public void onFragmentInteraction(Uri uri) {
 
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
 
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
     private void addPrays(List<Product> products) {
         for (Product p : products) {
             Product temp = new Product();

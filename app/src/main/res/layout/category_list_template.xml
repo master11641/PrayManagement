@@ -2,7 +2,9 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutDirection="rtl"
     android:stretchColumns="*">
+
     <TableRow
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -11,7 +13,7 @@
 
         >
         <ImageView
-            android:id="@+id/imageViewBookmark"
+            android:id="@+id/imageCategory"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
@@ -21,20 +23,14 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:id="@+id/product_name"
-
+            android:id="@+id/productCategory"
             />
-
         <ImageView
-            android:id="@+id/imageViewOperation"
+            android:id="@+id/imageViewCategoryOperation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
             android:src="@drawable/ic_dehaze_black_24dp"
             />
-
-
     </TableRow>
-
-
 </TableLayout>

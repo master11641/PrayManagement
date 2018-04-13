@@ -1,0 +1,39 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="40dp"
+    android:id="@+id/frgCategoryInsert"
+    tools:context="com.example.alireza.myapplication.FrgCategoryInsert">
+
+    <EditText
+        android:id="@+id/txtCategoryName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:fontFamily="serif"
+        android:hint="عنوان گروه را وارد کنید "
+        android:inputType="textLongMessage"
+        android:textAlignment="textStart" />
+    <ImageButton
+        android:id="@+id/imgBtnImagSrc"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="100dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:src="@mipmap/ic_launcher_foreground" />
+
+
+    <Button
+        android:id="@+id/btnAddPCategory"
+        style="@android:style/Widget.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:background="@drawable/rect"
+        android:text="درج دعای جدید" />
+
+</FrameLayout>

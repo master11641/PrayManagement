@@ -1,26 +1,27 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layoutDirection="rtl"
-    android:layout_gravity="right"
-    tools:context="com.example.alireza.myapplication.FrgDetails">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 
-    <!-- TODO: Update blank fragment layout -->
-    <EditText
-        android:layout_width="match_parent"
-        android:id="@+id/txtViewDetails"
-        android:layoutDirection="rtl"
-        android:layout_gravity="end"
-        android:textSize="20sp"
-        android:lineSpacingMultiplier="2"
-        android:lineSpacingExtra="0dp"
-        android:scrollbars="vertical"
-        android:padding="10dp"
-        android:layout_height="match_parent"
-        android:inputType="none"
-        android:minLines="10"
+    android:layout_width="fill_parent"
 
-        />
+    android:layout_height="fill_parent"
 
-</FrameLayout>
+    android:fillViewport="true" >
+
+    <LinearLayout
+
+        android:layout_width="fill_parent"
+
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/txtViewDetails"
+            android:padding="10dp"
+            android:textSize="18sp"
+            android:lineSpacingMultiplier="2"
+            android:lineSpacingExtra="0dp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"/>
+    </LinearLayout>
+</ScrollView>

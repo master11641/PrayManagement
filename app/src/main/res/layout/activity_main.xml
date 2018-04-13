@@ -10,8 +10,6 @@
     android:layout_gravity="right"
     android:background="@color/White"
     tools:openDrawer="start">
-
-
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view_notification"
         android:background="@color/colorPrimaryDark"
@@ -26,11 +24,52 @@
             android:scaleType="centerCrop"
             android:contentDescription="Profile Picture"/>
         <Button
-            android:id="@+id/btnList"
+            android:id="@+id/btnCategoryList"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
+            android:textColor="@color/Black"
+            android:textAlignment="inherit"
+            android:layout_gravity="right"
+            android:layout_alignParentEnd="true"
+            android:drawableRight="@drawable/ic_toc_black_24dp"
+            android:layout_alignParentRight="true"
+            android:textStyle="bold"
+            android:text="مدیریت دسته بندی" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="95dp"
+            android:src="@mipmap/ic_launcher_foreground"
+            android:scaleType="centerCrop"
+            android:contentDescription="Profile Picture"/>
+        <Button
+            android:id="@+id/btnCategoryAdd"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="140dp"
+            android:textColor="@color/Black"
+            android:textAlignment="inherit"
+            android:layout_gravity="right"
+            android:layout_alignParentEnd="true"
+            android:drawableRight="@drawable/ic_toc_black_24dp"
+            android:layout_alignParentRight="true"
+            android:textStyle="bold"
+            android:text="مدیریت دسته بندی" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="95dp"
+            android:src="@mipmap/ic_launcher_foreground"
+            android:scaleType="centerCrop"
+            android:contentDescription="Profile Picture"/>
+        <Button
+            android:id="@+id/btnList"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="180dp"
             android:textColor="@color/Black"
             android:textAlignment="inherit"
             android:layout_gravity="right"
@@ -54,7 +93,7 @@
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="140dp"
+            android:layout_marginTop="220dp"
             android:textColor="@color/Black"
             android:textStyle="bold"
             android:drawableRight="@drawable/ic_playlist_add_black_24dp"
