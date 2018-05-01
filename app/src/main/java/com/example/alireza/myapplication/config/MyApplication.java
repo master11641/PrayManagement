@@ -1,7 +1,11 @@
 package com.example.alireza.myapplication.config;
 
 import android.app.Application;
+import android.util.Log;
+
 import  com.activeandroid.ActiveAndroid;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -27,7 +31,7 @@ public class MyApplication  extends Application {
         sInstance = this;
         ActiveAndroid.initialize(this);
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("font/BZar.ttf")
+                .setDefaultFontPath("font/IRANSansMobile.ttf")
                 .setFontAttrId(uk.co.chrisjenx.calligraphy.R.attr.fontPath)
                 .build()
         );

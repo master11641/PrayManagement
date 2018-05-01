@@ -8,42 +8,37 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
-import com.activeandroid.query.Select;
-import com.example.alireza.myapplication.adapters.AdapterProduct;
-import com.example.alireza.myapplication.model.Product;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+import libs.mjn.prettydialog.PrettyDialog;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FrgOne.OnFragmentInteractionListener} interface
+ * {@link FrgWebView.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FrgOne#newInstance} factory method to
+ * Use the {@link FrgWebView#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FrgOne extends Fragment {
+public class FrgWebView extends Fragment {
+    private WebView webView;
+   private PrettyDialog dialog1;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    Product product;
-    ListView lv;
-    private ArrayList<Product> list;
+
+
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private long categoryID;
+    private String link;
+
+
     private OnFragmentInteractionListener mListener;
 
-    public FrgOne() {
+    public FrgWebView() {
         // Required empty public constructor
     }
 
@@ -51,70 +46,65 @@ public class FrgOne extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param categoryID Parameter 1.
-
-     * @return A new instance of fragment FrgOne.
+     * @param link Parameter 1.
+     * @return A new instance of fragment FrgWebView.
      */
     // TODO: Rename and change types and number of parameters
-    public static FrgOne newInstance(long categoryID) {
-        FrgOne fragment = new FrgOne();
+    public static FrgWebView newInstance(String link) {
+        FrgWebView fragment = new FrgWebView();
         Bundle args = new Bundle();
-        args.putLong(ARG_PARAM1, categoryID);
-      //  args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM1, link);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        webView = (WebView) getActivity().findViewById(R.id.webView);
+       // progressBar = (BallView) getActivity().findViewById(R.id.ballViewLoading);
+
+
+this.dialog1=new PrettyDialog(getContext())
+        .setTitle("پیام!")
+        .setMessage(" سایت در حال بارگذاری است ، لطفا صبور باشید ");
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.setInitialScale(90);
+        webView.getSettings().setSupportZoom(true);
+        dialog1.show();
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                dialog1.show();
+                view.loadUrl(url);
+                return false;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, final String url) {
+                dialog1.dismiss();
+            }
+        });
+
+        webView.loadUrl(link);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            categoryID = getArguments().getLong(ARG_PARAM1);
-           // mParam2 = getArguments().getString(ARG_PARAM2);
+            link = getArguments().getString(ARG_PARAM1);
+          //  mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
-
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        this.product = new Product();
-        this.list = new ArrayList<Product>();
-        lv = (ListView)  getView().findViewById(R.id.lv);
-        reloadData();
-        Product[] countries = list.toArray(new Product[list.size()]);
-        // Toast.makeText(this,String.valueOf(this.list.size())  , Toast.LENGTH_SHORT).show();
-        //  Toast.makeText(this,this.list.get(0).getProductName() , Toast.LENGTH_SHORT).show();
-        //  ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, values)
-
-        ArrayAdapter<Product> adapter = new ArrayAdapter<Product>(getActivity(), android.R.layout.simple_list_item_1, countries);
-
-        AdapterProduct adbPerson;
-        //ArrayList<Person> myListItems  = new ArrayList<Person>();
-        //then populate myListItems
-        adbPerson = new AdapterProduct( getActivity() , 0, list);
-        lv.setAdapter(adbPerson);
-    }
-
-    private void reloadData() {
-        List<Product> ls;
-        if(categoryID==0){
-             ls = new Select().from(Product.class).execute();
-        }else{
-            ls = new Select().from(Product.class).where("Category = ?", categoryID).execute();
-
-        }
-
-        list.clear();
-        list.addAll(ls);
-
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_frg_one, container, false);
+        return inflater.inflate(R.layout.fragment_frg_web_view, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

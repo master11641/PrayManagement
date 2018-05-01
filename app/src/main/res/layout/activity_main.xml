@@ -16,27 +16,30 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="false">
+        android:fitsSystemWindows="false"
+        app:menu="@menu/navigation_main_menu"
+        >
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="95dp"
             android:src="@mipmap/ic_launcher_foreground"
             android:scaleType="centerCrop"
             android:contentDescription="Profile Picture"/>
+
         <Button
             android:id="@+id/btnCategoryList"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:textColor="@color/Black"
-            android:textAlignment="inherit"
-            android:layout_gravity="right"
             android:layout_alignParentEnd="true"
-            android:drawableRight="@drawable/ic_toc_black_24dp"
             android:layout_alignParentRight="true"
-            android:textStyle="bold"
-            android:text="مدیریت دسته بندی" />
+            android:layout_gravity="right"
+            android:layout_marginTop="100dp"
+            android:drawableRight="@drawable/ic_toc_black_24dp"
+            android:text="مدیریت دسته بندی"
+            android:textAlignment="viewStart"
+            android:textColor="@color/Black"
+            android:textStyle="bold" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -44,40 +47,29 @@
             android:src="@mipmap/ic_launcher_foreground"
             android:scaleType="centerCrop"
             android:contentDescription="Profile Picture"/>
-        <Button
-            android:id="@+id/btnCategoryAdd"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="140dp"
-            android:textColor="@color/Black"
-            android:textAlignment="inherit"
-            android:layout_gravity="right"
-            android:layout_alignParentEnd="true"
-            android:drawableRight="@drawable/ic_toc_black_24dp"
-            android:layout_alignParentRight="true"
-            android:textStyle="bold"
-            android:text="مدیریت دسته بندی" />
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="95dp"
             android:src="@mipmap/ic_launcher_foreground"
             android:scaleType="centerCrop"
             android:contentDescription="Profile Picture"/>
+
         <Button
             android:id="@+id/btnList"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="180dp"
-            android:textColor="@color/Black"
-            android:textAlignment="inherit"
-            android:layout_gravity="right"
-            android:layout_alignParentEnd="true"
-            android:drawableRight="@drawable/ic_toc_black_24dp"
+            android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_marginTop="180dp"
+            android:drawableRight="@drawable/ic_toc_black_24dp"
+            android:text="مدیریت دعاها"
+            android:textAlignment="viewStart"
+            android:textColor="@color/Black"
             android:textStyle="bold"
-            android:text="نمایش دعاها" />
+            tools:ignore="RtlCompat" />
         <ImageView
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:src="@android:drawable/divider_horizontal_dark"
@@ -88,22 +80,79 @@
             android:paddingRight="5dp"
             android:paddingBottom="2dp"
             android:paddingTop="2dp" />
+
         <Button
             android:id="@+id/btnAdd"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="220dp"
-            android:textColor="@color/Black"
-            android:textStyle="bold"
-            android:drawableRight="@drawable/ic_playlist_add_black_24dp"
-            android:textAlignment="inherit"
-            android:layout_gravity="right"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:text="درج دعای جدید" />
+            android:layout_gravity="right"
+            android:layout_marginTop="220dp"
+            android:drawableRight="@drawable/ic_playlist_add_black_24dp"
+            android:text="افزودن دعای جدید"
+            android:textAlignment="viewStart"
+            android:textColor="@color/Black"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/btnSelectCategory"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_marginTop="260dp"
+            android:drawableRight="@drawable/ic_playlist_add_black_24dp"
+            android:text="انتخاب گروه"
+            android:textAlignment="viewStart"
+            android:textColor="@color/Black"
+            android:textStyle="bold" />
+        <Button
+        android:id="@+id/btnShowSite"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
 
+        android:layout_gravity="right"
+        android:layout_marginTop="300dp"
+        android:drawableRight="@drawable/ic_playlist_add_black_24dp"
+        android:text=" سایت ما"
+        android:textAlignment="viewStart"
+        android:textColor="@color/Black"
+        android:textStyle="bold"
+        tools:ignore="RtlCompat" />
 
+        <Button
+            android:id="@+id/btnNotification"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="right"
+            android:layout_marginTop="340dp"
+            android:drawableRight="@drawable/ic_playlist_add_black_24dp"
+            android:text="  نمایش اعلان"
+            android:textAlignment="viewStart"
+            android:textColor="@color/Black"
+            android:textStyle="bold"
+            tools:ignore="RtlCompat" />
+        <Button
+            android:id="@+id/btnCategoryAdd"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_marginTop="140dp"
+            android:drawableRight="@drawable/ic_playlist_add_black_24dp"
+            android:text="افزودن گروه جدید"
+            android:textAlignment="viewStart"
+            android:textColor="@color/Black"
+            android:textStyle="bold" />
 
 
     </android.support.design.widget.NavigationView>

@@ -13,13 +13,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.activeandroid.query.Select;
+import com.example.alireza.myapplication.adapters.AdapterCategoryForSelect;
+import com.example.alireza.myapplication.model.Category;
 import com.example.alireza.myapplication.model.Product;
 
 
+import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 /**
@@ -38,18 +46,18 @@ public class frgAddPray extends Fragment {
     EditText txtProductName;
     EditText txtProductDescription;
 
+    @BindView(R.id.spCategories) Spinner spCategories;
+    private Unbinder unbinder;
     Button btnInsert;
     Product product;
+    Category category;
+    private ArrayList<Category> list;
     // TODO: Rename and change types of parameters
     private Long productID;
-
-
     private OnFragmentInteractionListener mListener;
-
     public frgAddPray() {
         // Required empty public constructor
     }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -65,23 +73,23 @@ public class frgAddPray extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             productID = getArguments().getLong(ARG_PARAM1);
         }
-
     }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
+        list=new ArrayList<Category>();
         txtProductName = (EditText) getView().findViewById(R.id.txtProductName1);
         txtProductDescription = (EditText) getView().findViewById(R.id.txtProductDescription);
         btnInsert = (Button) getView().findViewById(R.id.btnAddProduct);
-
+        loadCategories();
+        AdapterCategoryForSelect adbCategory = new AdapterCategoryForSelect( getContext() ,  list,true);
+        adbCategory.setDropDownViewResource(R.layout.spinner_category_item);
+        spCategories.setAdapter(adbCategory);
         if (productID!=0) {
             // btnInsert.setVisibility(View.INVISIBLE);
             btnInsert.setText("ویرایش دعا");
@@ -95,6 +103,9 @@ public class frgAddPray extends Fragment {
                     String ProductDescription=txtProductDescription.getText().toString();
                     product.setProductName(productName);
                     product.setProductDescription(ProductDescription);
+                    int spinnerPos = spCategories.getSelectedItemPosition();
+                    Category selectedCategory=list.get(spinnerPos);
+                    product.category=selectedCategory;
                     product.save();
                     Toast.makeText(getView().getContext(), "رکورد با موفقیت ویرایش شد .", Toast.LENGTH_SHORT).show();
              /*   Intent intent = new Intent(getActivity(), ProductListActivity.class);
@@ -109,13 +120,17 @@ public class frgAddPray extends Fragment {
         }else{
             btnInsert.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    String text = spCategories.getSelectedItem().toString();
+                    int spinnerPos = spCategories.getSelectedItemPosition();
+                    Category selectedCategory=list.get(spinnerPos);
                     product = new Product();
                     String productName = txtProductName.getText().toString();
                     String ProductDescription=txtProductDescription.getText().toString();
                     product.setProductDescription(ProductDescription);
                     product.setProductName(productName);
+                    product.category=selectedCategory;
                     product.save();
-                    Toast.makeText(getView().getContext(), "رکورد با موفقیت درج شد .", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getView().getContext(), text, Toast.LENGTH_SHORT).show();
              /*   Intent intent = new Intent(getActivity(), ProductListActivity.class);
                 startActivity(intent);*/
                     FrgOne frg1 = new FrgOne();
@@ -134,7 +149,9 @@ public class frgAddPray extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_frg_add_pray, container, false);
+        View view = inflater.inflate(R.layout.fragment_frg_add_pray, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -196,7 +213,16 @@ public class frgAddPray extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+    private void loadCategories() {
+        List<Category> ls = new Select().from(Category.class).execute();
+       if(list==null){
+           list=new ArrayList<Category>();
+       }else{
+           list.clear();
+       }
+        list.addAll(ls);
 
+    }
     private void loadPray(){
 
         // Check if our Car saved correctly
@@ -221,6 +247,10 @@ public class frgAddPray extends Fragment {
         else{
             //  Log.e(Tag, "loadCar car " + SERIAL_NUMBER + " does not exist!");
         }
+    }
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
 

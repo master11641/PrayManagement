@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/menu_top"
+        android:checkableBehavior="single">
+        <item
+            android:checked="true"
+            android:id="@+id/drawer_item_timeline"
+            android:icon="@drawable/ic_toc_black_24dp"
+            android:title="@string/app_name"/>
+        <item
+            android:id="@+id/drawer_item_reports"
+            android:icon="@drawable/ic_toc_black_24dp"
+            android:title="@string/title_activity_product_insert"/>
+    </group>
+
+    <group
+        android:id="@+id/menu_bottom"
+        android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/drawer_item_settings"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/hello_world" >
+        </item>
+    </group>
+</menu>

@@ -92,11 +92,13 @@ public class FrgCategoryInsert extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_frg_category_insert, container, false);
     }
+
     public void pickImage() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(intent, PICK_IMAGE);
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         txtCategoryName = (EditText) getView().findViewById(R.id.txtCategoryName);
@@ -104,37 +106,30 @@ public class FrgCategoryInsert extends Fragment {
         imgBtnImageSrc = getView().findViewById(R.id.imgBtnImagSrc);
         btnInsert = getView().findViewById(R.id.btnAddPCategory);
         if (categoryID == 0) {
-
+            btnInsert.setText("درج گروه");
             btnInsert.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Category category = new Category();
+
                     String categoryName = txtCategoryName.getText().toString();
-                    category.setName(categoryName);
-                    Toast.makeText(getContext(), categoryName, Toast.LENGTH_LONG).show();
-                    category.save();
-                    FrgCategoryList frg = new FrgCategoryList();
-                    android.support.v4.app.FragmentManager fm = ((FragmentActivity) getView().getContext()).getSupportFragmentManager();
-                    android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
-                    ft.replace(R.id.frg_holder, frg);
-                    ft.commit();
+                    currentCategory.setName(categoryName);
+                    currentCategory.save();
+                goToCategotyFragment();
                 }
             });
         } else {
-
+            btnInsert.setText("ویرایش گروه");
             this.txtCategoryName.setText(this.currentCategory.getName());
-            if (this.currentCategory.getImgSrc() != "" && this.currentCategory.getImgSrc()!=null) {
-                Toast.makeText(getContext(), this.currentCategory.getImgSrc(), Toast.LENGTH_LONG).show();
-                Uri selecterImage=Uri.parse(this.currentCategory.getImgSrc());
-                try {
+            if (this.currentCategory.getImgSrc() != "" && this.currentCategory.getImgSrc() != null) {
 
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(this.currentCategory.getImgSrc()));
-                    imgBtnImageSrc.setImageBitmap(bitmap);
-                } catch (IOException e) {
-                    Log.i("TAG", "Some exception " + e);
+                if(Helper.GetBimapFromPath(this.currentCategory.getImgSrc())!=null){
+                    imgBtnImageSrc.setImageBitmap(Helper.GetBimapFromPath(this.currentCategory.getImgSrc()));
+                }else{
+                    Toast.makeText(getContext(), "آدرس معتبر نیست", Toast.LENGTH_LONG).show();
                 }
+             //   Helper.GetBimapFromPath(this.currentCategory.getImgSrc());
 
-            }else{
+            } else {
                 Toast.makeText(getContext(), "آدرس گروه در بانک خالی است", Toast.LENGTH_LONG).show();
             }
 
@@ -142,14 +137,13 @@ public class FrgCategoryInsert extends Fragment {
                 @Override
                 public void onClick(View view) {
                     currentCategory.setName(txtCategoryName.getText().toString());
-                    Helper.showDialog(getContext(),"آدرس تصویر",currentCategory.getImgSrc());
                     currentCategory.save();
+                    goToCategotyFragment();
                 }
             });
 
 
         }
-
 
 
         imgBtnImageSrc.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +153,15 @@ public class FrgCategoryInsert extends Fragment {
             }
         });
     }
+
+    private void goToCategotyFragment() {
+        FrgCategoryList frg = new FrgCategoryList();
+        android.support.v4.app.FragmentManager fm = ((FragmentActivity) getView().getContext()).getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.frg_holder, frg);
+        ft.commit();
+    }
+
     private void loadCategory() {
 
         // Check if our Car saved correctly
@@ -176,74 +179,45 @@ public class FrgCategoryInsert extends Fragment {
                             .from(Category.class) // Specify the table to search
                             .where("ID = ?", categoryID) // search criteria
                             .executeSingle(); // return only the first match
-            Helper.showDialog(getContext(),"",currentCategory.getImgSrc());
+
 
             // TODO: Set the TextView to display the formatted json object
 
         } else {
-            this.currentCategory=new Category();
+            this.currentCategory = new Category();
             //  Log.e(Tag, "loadCar car " + SERIAL_NUMBER + " does not exist!");
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(getContext(), "برگشت", Toast.LENGTH_LONG).show();
-        if ( resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
             if (data == null) {
                 //Display an error
                 return;
             }
             try {
                 InputStream inputStream = getContext().getContentResolver().openInputStream(data.getData());
-                Toast.makeText(getContext(), String.valueOf(data.getData().toString()), Toast.LENGTH_LONG).show();
-                this.currentCategory.setImgSrc(String.valueOf(data.getData()));
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(this.currentCategory.getImgSrc()));
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
                     imgBtnImageSrc.setImageBitmap(bitmap);
+                    this.currentCategory.setImgSrc( Helper.saveToInternalStorage(getContext(), bitmap));
+
                 } catch (IOException e) {
                     Log.i("TAG", "Some exception " + e);
                 }
 
-
-
-
-
-
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            //Now you can do whatever you want with your inpustream, save it as file, upload to a server, decode a bitmap...
         }
 
 
-        /*if (resultCode == Activity.RESULT_OK) {
-            Uri selectedImage = data.getData();
-            Toast.makeText(getContext(), String.valueOf(selectedImage), Toast.LENGTH_LONG).show();
-            this.currentCategory.setImgSrc(String.valueOf(selectedImage));
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
-                imgBtnImageSrc.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                Log.i("TAG", "Some exception " + e);
-            }
+    }
 
-        }*/
-    }
-    public String getRealPathFromURI(Context context, Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-    }
+
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

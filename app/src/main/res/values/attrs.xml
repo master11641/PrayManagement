@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="easy_flip_view">
+        <!-- Whether card should be flipped on touch or not (Default is true) -->
+        <attr name="flipOnTouch" format="boolean"/>
+        <!-- The duration of flip animation in milliseconds (Default is 400 ms) -->
+        <attr name="flipDuration" format="integer"/>
+        <!-- If this is set to false, then it won't flip ever (Default is true) -->
+        <attr name="flipEnabled" format="boolean"/>
+
+        <attr name="sectionDialogBackground" format="reference" />
+        <attr name="backgroundColor" format="reference" />
+        <attr name="drawerTextColor" format="reference"/>
+        <attr name="ic_date" format="reference"/>
+        <attr name="txtFabSheetColor" format="reference" />
+        <attr name="ic_FabSheetHelp" format="reference" />
+        <attr name="ic_FabSheet" format="reference" />
+        <attr name="loadingBackColor" format="reference"/>
+        <attr name="circle_item_id" format="reference" />
+        <attr name="layout_exit_background" format="reference" />
+        <attr name="layout_exit_background_dark" format="reference" />
+        <attr name="border_dialog_background" format="reference" />
+        <attr name="border_fill_background" format="reference" />
+        <attr name="item_refreshIcon" format="reference" />
+        <attr name="item_settingIcon" format="reference" />
+        <attr name="item_chartIcon" format="reference" />
+
+    </declare-styleable>
+
+</resources>

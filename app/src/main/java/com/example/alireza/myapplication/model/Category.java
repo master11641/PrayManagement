@@ -31,4 +31,8 @@ public class Category extends Model {
     public void setImgSrc(String imgSrc) {
         this.imgSrc = imgSrc;
     }
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

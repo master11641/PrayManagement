@@ -1,5 +1,10 @@
 package com.example.alireza.myapplication;
 
+import android.app.FragmentTransaction;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -7,14 +12,18 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +32,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.alireza.myapplication.model.Product;
+import com.example.alireza.myapplication.utility.Helper;
 import com.example.alireza.myapplication.utility.ListTypeSerializer;
 import com.example.alireza.myapplication.utility.httpHandler;
 import com.google.gson.Gson;
@@ -35,13 +45,18 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import libs.mjn.prettydialog.PrettyDialog;
 import libs.mjn.prettydialog.PrettyDialogCallback;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity implements FrgOne.OnFragmentInteractionListener, frgAddPray.OnFragmentInteractionListener
-        , FrgDetails.OnFragmentInteractionListener, FrgCategoryList.OnFragmentInteractionListener, FrgCategoryInsert.OnFragmentInteractionListener {
-
+        , FrgDetails.OnFragmentInteractionListener, FrgCategoryList.OnFragmentInteractionListener,
+        FrgCategoryInsert.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener
+        , FrgWebView.OnFragmentInteractionListener {
+    @BindView(R.id.btnNotification) Button btnShowNotification;
     ListView mListView;
     String[] mobileBrands;
     EditText txtProductName;
@@ -56,7 +71,9 @@ public class MainActivity extends AppCompatActivity implements FrgOne.OnFragment
     ImageButton imageGetFromServer;
     Button btnListGroup;
     Button btnCategotyAdd;
-
+    Button btnSelectCtegory;
+    Button btnShowSite;
+    int mStackLevel=0;
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
@@ -68,7 +85,30 @@ public class MainActivity extends AppCompatActivity implements FrgOne.OnFragment
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_main);
-        btnCategotyAdd=findViewById(R.id.btnCategoryAdd);
+          ButterKnife.bind(this);
+        btnShowSite = findViewById(R.id.btnShowSite);
+        btnShowSite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FrgWebView frg = FrgWebView.newInstance("http://www.tagweb.ir");
+                android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+                android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.frg_holder, frg);
+                ft.commit();
+
+            }
+        });
+
+        btnSelectCtegory = findViewById(R.id.btnSelectCategory);
+        btnSelectCtegory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog();
+            }
+        });
+
+
+        btnCategotyAdd = findViewById(R.id.btnCategoryAdd);
         btnCategotyAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements FrgOne.OnFragment
         drawer.useCustomBehavior(Gravity.START); //assign custom behavior for "Right" drawer
         navigationView = (NavigationView) findViewById(R.id.nav_view_notification);
         navigationView.setBackgroundColor(getResources().getColor(R.color.White));
+        navigationView.setNavigationItemSelectedListener(this);
         btnListGroup = findViewById(R.id.btnCategoryList);
         btnListGroup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,6 +295,25 @@ public class MainActivity extends AppCompatActivity implements FrgOne.OnFragment
     public void onFragmentInteraction(Uri uri) {
 
     }
+    void showDialog() {
+
+        String DIALOG_ALERT = "dialog_alert";
+
+        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        android.support.v4.app.Fragment prev = getSupportFragmentManager().findFragmentByTag(DIALOG_ALERT);
+        if (prev != null){
+            DialogFragment df = (DialogFragment) prev;
+            df.dismiss();
+            transaction.remove(prev);
+        }
+
+        transaction.addToBackStack(null);
+
+        // create and show the dialog
+        DialogFragment newFragment = FrgCategorySelect.newInstance(1);
+        newFragment.show(getSupportFragmentManager().beginTransaction(), DIALOG_ALERT);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
@@ -262,6 +322,7 @@ public class MainActivity extends AppCompatActivity implements FrgOne.OnFragment
             fragment.onActivityResult(requestCode, resultCode, data);
         }
     }
+
     private void addPrays(List<Product> products) {
         for (Product p : products) {
             Product temp = new Product();
@@ -270,5 +331,19 @@ public class MainActivity extends AppCompatActivity implements FrgOne.OnFragment
             temp.save();
         }
     }
+    @OnClick(R.id.btnNotification)
+    public void onNotificationClick(View view) {
+        Toast.makeText(getApplicationContext(),"نوتیفیکیشن",Toast.LENGTH_LONG).show();
+       new Helper().showNotification(MainActivity.this,"عنوان","متن");
 
+
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+       if(item.getItemId()==R.id.drawer_item_settings){
+           Toast.makeText(getApplicationContext(), "Hello Android", Toast.LENGTH_LONG).show();
+       }
+       return true;
+    }
 }
